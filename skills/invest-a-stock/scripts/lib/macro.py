@@ -33,7 +33,7 @@ from ._invest_path import ensure_skills_lib_on_path  # noqa: E402
 
 ensure_skills_lib_on_path()
 
-from cache import default_cache  # noqa: E402
+from .cache import default_cache  # noqa: E402
 
 logger = logging.getLogger(__name__)
 

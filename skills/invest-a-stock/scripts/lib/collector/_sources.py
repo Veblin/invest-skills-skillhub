@@ -39,7 +39,7 @@ from ._base import (
 from lib._invest_path import ensure_skills_lib_on_path  # noqa: E402
 ensure_skills_lib_on_path()  # noqa: E402
 from lib.nums import ONE_PER_WAN, ONE_PER_YI  # noqa: E402
-from quote_tencent import (  # noqa: E402
+from lib.quote_tencent import (  # noqa: E402
     fetch_tencent_quote,
     is_tencent_unsupported,
     tencent_market,
@@ -1071,5 +1071,4 @@ def _qp_tickflow(symbol: str, start_date: str, end_date: str) -> str:
         f"tf.TickFlow.free().klines.get(symbol='{code}', "
         f"start={start_date}, end={end_date}, adjust='forward')"
     )
-
 

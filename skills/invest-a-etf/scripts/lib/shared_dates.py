@@ -10,7 +10,7 @@ from ._invest_path import ensure_skills_lib_on_path
 
 ensure_skills_lib_on_path()
 
-from dates import (  # noqa: E402
+from .dates import (  # noqa: E402
     fmt_fetched_at,
     latest_month_row,
     normalize_end_date,

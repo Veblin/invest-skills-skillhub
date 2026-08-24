@@ -760,4 +760,3 @@ def render_report_v3(collection: dict[str, Any], symbol: str, mode: str = "full"
             _risk_footer(),
         ])
     return "\n\n".join(p for p in parts if p)
-

@@ -19,12 +19,7 @@ _LIB_DIR = Path(__file__).resolve().parent / "lib"
 if str(_LIB_DIR) not in sys.path:
     sys.path.insert(0, str(_LIB_DIR))
 
-# 包内补丁（skillhub 构建注入）：scripts/ 入 sys.path — `from lib import ...` 的 lib 包解析依赖它
-_SCRIPT_PARENT = Path(__file__).resolve().parent
-if str(_SCRIPT_PARENT) not in sys.path:
-    sys.path.insert(0, str(_SCRIPT_PARENT))
-
-from etf_data import (  # noqa: E402
+from lib.etf_data import (  # noqa: E402
     CSINDEX_MAP,
     ETF_HEDGE_MAP,
     compute_history_stats,
@@ -64,7 +59,7 @@ _EVENTS_DIR = Path(__file__).resolve().parent.parent / "events"
 def _build_events_block(symbol: str, events_path: str | None,
                         history_block: dict | None) -> dict:
     """R11b: 事件文件加载 + 事件-价格对照（±1 交易日对齐）。无文件不阻断。"""
-    from etf_timeline import align_events_with_price, detect_big_move_days, load_events_file
+    from lib.etf_timeline import align_events_with_price, detect_big_move_days, load_events_file
 
     path = Path(events_path) if events_path else _EVENTS_DIR / f"{symbol}.json"
     if not path.exists():
@@ -86,7 +81,7 @@ def _build_events_block(symbol: str, events_path: str | None,
 
 def _build_playbook_block(history_block: dict | None, kline: dict) -> dict:
     """R11c: 回撤档位 σ 分级 + 三步核查 + LAW 6a 声明（研究流程规则，非买卖指令）。"""
-    from etf_playbook import (
+    from lib.etf_playbook import (
         LAW6A_DISCLAIMER,
         daily_vol_pct,
         drawdown_levels,
@@ -162,7 +157,7 @@ def cmd_report(symbol: str, *, as_json: bool, with_nav: bool,
     # R11c: 情景预案（回撤档位 σ 分级 + 三步核查 + LAW 6a 声明）
     playbook_block = _build_playbook_block(history_block, kline) if playbook else None
 
-    from dates import shanghai_now
+    from lib.dates import shanghai_now
 
     payload = {
         "skill": "invest-a-etf",
@@ -342,7 +337,7 @@ def cmd_holdings(symbol: str, *, as_json: bool) -> int:
         return 2
     data = query_etf_holdings(symbol)
     if as_json:
-        from dates import shanghai_now
+        from lib.dates import shanghai_now
 
         payload = {
             "skill": "invest-a-etf",
@@ -396,13 +391,13 @@ def cmd_peers(symbol: str, *, as_json: bool, peers_str: str | None) -> int:
     if peers_str:
         peers_list = [p.strip() for p in peers_str.split(",") if p.strip()]
     try:
-        from etf_peers import query_etf_peers
+        from lib.etf_peers import query_etf_peers
     except ImportError as exc:
         print(f"etf_peers 模块不可用: {exc}（请检查路径配置或 canonical 模块加载）")
         return 1
     data = query_etf_peers(symbol, peers_list)
     if as_json:
-        from dates import shanghai_now
+        from lib.dates import shanghai_now
 
         payload = {
             "skill": "invest-a-etf",
@@ -451,8 +446,8 @@ def cmd_peers(symbol: str, *, as_json: bool, peers_str: str | None) -> int:
 
 def cmd_futures_basis(symbol: str, *, as_json: bool) -> int:
     """ETF 股指期货动态基差状态（F 系列，状态度量非预测）。"""
-    from dates import shanghai_now  # noqa: E402
-    from futures_basis import query_futures_basis  # noqa: E402
+    from lib.dates import shanghai_now  # noqa: E402
+    from lib.futures_basis import query_futures_basis  # noqa: E402
 
     result = query_futures_basis(symbol)
     payload = {"skill": "invest:a-etf", "generated_at": shanghai_now().isoformat(),
@@ -477,13 +472,13 @@ def cmd_sector_flow(symbol: str, *, as_json: bool) -> int:
     if symbol is None:
         return 2
     try:
-        from sector_flow import query_sector_flow
+        from lib.sector_flow import query_sector_flow
     except ImportError as exc:
         print(f"sector_flow 模块不可用: {exc}（请检查路径配置）")
         return 1
     data = query_sector_flow(symbol)
     if as_json:
-        from dates import shanghai_now
+        from lib.dates import shanghai_now
 
         payload = {
             "skill": "invest-a-etf",
@@ -528,7 +523,7 @@ def cmd_collect_sector_flow() -> int:
     输出警告，供映射表在线核对；单窗口取数失败告警且跳过自检（名单不全防误报）。
     """
     try:
-        from sector_flow import (check_mapping_coverage, check_snapshot_drift,
+        from lib.sector_flow import (check_mapping_coverage, check_snapshot_drift,
                                  fetch_sector_flow_snapshot, load_drift_baseline,
                                  save_drift_baseline, save_sector_flow_snapshot)
     except ImportError as exc:
@@ -574,7 +569,7 @@ def cmd_collect_sector_flow() -> int:
 def cmd_industry_pe() -> int:
     """打印申万一级行业 PE/PB 一览。"""
     try:
-        from industry_snapshot import list_industry_snapshot
+        from lib.industry_snapshot import list_industry_snapshot
     except ImportError:
         print("industry_snapshot 模块不可用（请检查路径配置）")
         return 1
@@ -604,7 +599,7 @@ def _persist_index_pe(idx_codes: list[str] | None) -> dict:
     决定是否提示。cold-cache 失败日 data_bridge 不缓存 missing 信封，此
     调用与报告自身取数各回源一次（见 index_pe_snapshot 模块 docstring）。
     """
-    from index_pe_snapshot import persist_index_pe_from_cache
+    from lib.index_pe_snapshot import persist_index_pe_from_cache
     try:
         return persist_index_pe_from_cache(idx_codes)
     except Exception as exc:
@@ -614,7 +609,7 @@ def _persist_index_pe(idx_codes: list[str] | None) -> dict:
 def cmd_collect_weekly() -> int:
     """手动触发行业 PE 周度采集 + 指数 PE 历史快照入库。"""
     try:
-        from industry_snapshot import collect_industry_weekly
+        from lib.industry_snapshot import collect_industry_weekly
     except ImportError:
         print("industry_snapshot 模块不可用（请检查路径配置）")
         return 1

@@ -55,4 +55,3 @@ def archive_collection(
         logging.getLogger(__name__).warning("archive_collection failed: %s", exc)
         return None
 
-

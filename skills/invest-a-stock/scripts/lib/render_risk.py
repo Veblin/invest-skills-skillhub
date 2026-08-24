@@ -1093,4 +1093,3 @@ def _section_left_right_probability(
     lines.append("")
     lines.append("🔍 **待独立验证:** 本节呈现概率结构与支持依据，不构成位置判断。")
     return "\n".join(lines)
-

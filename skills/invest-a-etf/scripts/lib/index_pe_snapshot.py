@@ -20,7 +20,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from _invest_path import ensure_invest_a_scripts_on_path
+from ._invest_path import ensure_invest_a_scripts_on_path
 
 ensure_invest_a_scripts_on_path()
 
@@ -65,7 +65,7 @@ def _bridge_envelope(idx_code: str) -> dict[str, Any] | None:
     C15 收敛：委托 etf_data._bridge_get（同目录 peer 的通用惰性包装）；
     保留函数名与 dict 过滤——6 处测试 monkeypatch 该函数名。
     """
-    from etf_data import _bridge_get
+    from .etf_data import _bridge_get
 
     env = _bridge_get("get_etf_index_pe", idx_code)
     return env if isinstance(env, dict) else None
@@ -90,7 +90,7 @@ def persist_index_pe_from_cache(idx_codes: list[str] | None = None) -> dict[str,
     """
     if idx_codes is None:
         try:
-            from etf_data import CSINDEX_MAP
+            from .etf_data import CSINDEX_MAP
             idx_codes = sorted({v for v in CSINDEX_MAP.values() if v})
         except Exception:
             idx_codes = []

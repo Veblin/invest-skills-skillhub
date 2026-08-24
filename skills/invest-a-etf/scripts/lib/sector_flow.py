@@ -18,7 +18,7 @@ import math
 import sqlite3
 from typing import Any
 
-from _invest_path import ensure_invest_a_scripts_on_path
+from ._invest_path import ensure_invest_a_scripts_on_path
 
 ensure_invest_a_scripts_on_path()
 
@@ -120,7 +120,7 @@ def fetch_sector_flow_snapshot() -> dict[str, Any]:
                                3: {net,in,out,chg}, 5: {...}, 10: {...}}},
          errors: [str]}   # 单窗口失败记入 errors 不整体失败；全部失败 → available=False
     """
-    from dates import shanghai_today
+    from .dates import shanghai_today
     from lib.nums import coalesce_field
     from lib.proxy import akshare_direct_session
 
@@ -574,7 +574,7 @@ def query_sector_flow(symbol: str) -> dict[str, Any]:
     ETF 未映射或 THS 行业映射缺失 → available=False + note；
     单行业序列积累不足 → notes 行级提示「积累中」；单行业缺失不阻断。
     """
-    from etf_data import ETF_TO_SW_INDUSTRY
+    from .etf_data import ETF_TO_SW_INDUSTRY
 
     sw = ETF_TO_SW_INDUSTRY.get(symbol)
     if not sw:

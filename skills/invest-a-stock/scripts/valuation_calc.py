@@ -58,7 +58,7 @@ from lib._invest_path import ensure_skills_lib_on_path
 
 ensure_skills_lib_on_path()
 
-from quote_tencent import fetch_tencent_quote  # noqa: E402 — skills/lib 共享库（v0.2.7 腾讯行情唯一实现）
+from lib.quote_tencent import fetch_tencent_quote  # noqa: E402 — skills/lib 共享库（v0.2.7 腾讯行情唯一实现）
 
 # ---------------------------------------------------------------------------
 # 常量

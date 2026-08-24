@@ -14,7 +14,7 @@ import time
 from datetime import datetime
 from typing import Any
 
-from _invest_path import (  # noqa: E402
+from ._invest_path import (  # noqa: E402
     ensure_invest_a_scripts_on_path,
     ensure_skills_lib_on_path,
 )
@@ -22,8 +22,8 @@ from _invest_path import (  # noqa: E402
 ensure_invest_a_scripts_on_path()
 ensure_skills_lib_on_path()
 
-from codes import etf_symbol_to_ts_code  # noqa: E402
-from dates import shanghai_days_ago, shanghai_today  # noqa: E402
+from .codes import etf_symbol_to_ts_code  # noqa: E402
+from .dates import shanghai_days_ago, shanghai_today  # noqa: E402
 from lib.nums import (  # noqa: E402
     ONE_PER_YI,
     QIAN_PER_YI,
@@ -36,7 +36,7 @@ from lib.proxy import (  # noqa: E402
     no_proxy_session,
     throttle_eastmoney,
 )
-from quote_tencent import fetch_tencent_quote  # noqa: E402 — skills/lib 共享库（v0.2.7 腾讯行情唯一实现）
+from .quote_tencent import fetch_tencent_quote  # noqa: E402 — skills/lib 共享库（v0.2.7 腾讯行情唯一实现）
 from lib.technical import (  # noqa: E402
     annualized_volatility_from_returns,
     boll_latest,
@@ -402,7 +402,7 @@ def prefetch_etf_spot() -> bool:
     曾把空表误报为成功（v0.2.3 修复），隐藏失败的预热。
     """
     try:
-        import data_bridge  # noqa: PLC0415
+        import lib.data_bridge  # noqa: PLC0415
     except ImportError:
         return _get_etf_spot_df(force=True) is not None
     rows = data_bridge.get_etf_spot_rows()
@@ -512,7 +512,7 @@ def _bridge_get(getter: str, *args: Any) -> Any:
     （v0.2.3 补丁 #6）。
     """
     try:
-        import data_bridge  # noqa: PLC0415
+        import lib.data_bridge  # noqa: PLC0415
     except ImportError:
         logger.debug("data_bridge unavailable; %s degraded", getter)
         return None
@@ -1066,7 +1066,7 @@ def _index_pe_percentile_from_db(idx_code: str, current_pe: Any,
     if current is None:  # NaN/±inf/非数字 → 无分位（防 nan<=v 恒 False 的假 0%）
         return None
     try:
-        from index_pe_snapshot import get_index_pe_history, index_pe_percentile
+        from .index_pe_snapshot import get_index_pe_history, index_pe_percentile
         rows = get_index_pe_history(idx_code)
         if current_date is not None:
             rows = hist_ex_today(rows, current_date)

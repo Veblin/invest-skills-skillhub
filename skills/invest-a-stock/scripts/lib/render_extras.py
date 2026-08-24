@@ -89,4 +89,3 @@ def section_exogenous_shock(collection: dict) -> str:
         "",
     ])
     return "\n".join(lines)
-

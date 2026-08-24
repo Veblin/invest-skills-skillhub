@@ -322,4 +322,3 @@ def _safe_int(value: Any, default: int | None = None) -> int | None:
     except (TypeError, ValueError):
         return default
 
-

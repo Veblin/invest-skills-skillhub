@@ -1212,4 +1212,3 @@ def render_html(collection: dict[str, Any], symbol: str, md_text: str | None = N
 </html>"""
 
     return html
-

@@ -1586,9 +1586,9 @@ def _load_sector_sync_module():
     try:
         from lib._invest_path import ensure_skills_lib_on_path  # scripts/lib shim
     except ImportError:  # pragma: no cover — skills/lib 独立上下文
-        from invest_path import ensure_shared_lib_on_path as ensure_skills_lib_on_path
+        from lib.invest_path import ensure_shared_lib_on_path as ensure_skills_lib_on_path
     ensure_skills_lib_on_path()
-    from invest_path import invest_a_scripts_dir
+    from lib.invest_path import invest_a_scripts_dir
     import importlib.util as _ilu
 
     skills_lib = Path(invest_a_scripts_dir()).parent.parent / "lib"

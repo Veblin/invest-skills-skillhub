@@ -598,4 +598,3 @@ def _section_thesis(dims: dict[str, dict], collection: dict) -> str:
 
 
 
-

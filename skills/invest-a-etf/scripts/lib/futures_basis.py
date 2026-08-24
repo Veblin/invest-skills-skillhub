@@ -24,7 +24,7 @@ def futures_symbol_for_etf(symbol: str) -> str | None:
     IF/IH/IC/IM 四个品种 → 返回 None → 提示「无映射」，与 hedge-map
     自相矛盾。现在区分「无映射」与「有映射但数据层未覆盖」。
     """
-    from etf_data import ETF_HEDGE_MAP  # noqa: E402
+    from .etf_data import ETF_HEDGE_MAP  # noqa: E402
 
     entry = ETF_HEDGE_MAP.get(str(symbol))
     if not entry or not entry.get("futures"):
@@ -84,7 +84,7 @@ def query_futures_basis(symbol: str, *, days: int = 1000) -> dict[str, Any]:
     if len(basis_vals) < 60:
         result["note"] = "有效基差样本不足"
         return result
-    from stats import percentile_rank_inclusive  # noqa: E402
+    from .stats import percentile_rank_inclusive  # noqa: E402
 
     latest = rows[-1]
     result.update({

@@ -3785,4 +3785,3 @@ def _pe_band_markdown_table(
     ]
     return "\n".join(lines)
 
-

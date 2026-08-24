@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from etf_data import (
+from .etf_data import (
     ETF_TO_SW_INDUSTRY,
     _bridge_get,
     _lookup_etf_spot_row,

@@ -655,4 +655,3 @@ def _section_dcf_valuation(
     lines.append("")
 
     return "\n".join(lines)
-

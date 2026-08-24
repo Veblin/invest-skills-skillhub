@@ -10,7 +10,7 @@ from ._invest_path import ensure_skills_lib_on_path
 
 ensure_skills_lib_on_path()
 
-from codes import (  # noqa: E402
+from .codes import (  # noqa: E402
     classify_board,
     etf_symbol_to_ts_code,
     exchange_code,

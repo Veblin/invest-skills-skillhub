@@ -406,4 +406,3 @@ def _run_one_source(name: str, fn: Callable[[], Any], dimension: str,
                        name, dimension, res.latency_ms / 1000)
     return res
 
-

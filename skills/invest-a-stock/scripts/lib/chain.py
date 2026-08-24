@@ -85,7 +85,7 @@ def collect_chain_context(
         if not industry:
             from ._invest_path import ensure_skills_lib_on_path
             ensure_skills_lib_on_path()
-            from data_bridge import get_basic_info  # noqa: E402
+            from .data_bridge import get_basic_info  # noqa: E402
             try:
                 basic = get_basic_info(symbol)
             except Exception as exc:
