@@ -160,4 +160,4 @@
 
 - `host-docs/v0.2.5/deep-research/capital-mechanisms.md`：调研原文（逐条实证对照 + 二次核验勘误）
 - `host-docs/v0.2.5/execution-plan.md` §2：本文档规格来源（5 条机制表 + 引用纪律）
-- `skills/lib/references/chip-clearance.md`：同批新增共享 references（版本头/边界声明风格一致）
+- `lib/references/chip-clearance.md`：同批新增共享 references（版本头/边界声明风格一致）
